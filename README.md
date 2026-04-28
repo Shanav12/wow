@@ -36,20 +36,20 @@ As a small tutorial, let's build the wasmtime executor and run one of the exampl
 cargo build --manifest-path ./ow-executor/Cargo.toml --release --features wasmtime_rt
 ```
 
-2. Next we build the `add` example for the `wasm32-wasi` target with:
+2. Next we build the `add` example for the `wasm32-wasip1` target with:
 
 ```sh
-cargo build --manifest-path ./ow-wasm-action/Cargo.toml --release --example add --target wasm32-wasi --no-default-features --features wasm
+cargo build --manifest-path ./ow-wasm-action/Cargo.toml --release --example add --target wasm32-wasip1 --no-default-features --features wasm
 
 # Optional step to optimize the compiled Wasm if `wasm-opt` is installed
 # On Ubuntu it can be installed with `sudo apt install binaryen`
-wasm-opt -O4 -o ./target/wasm32-wasi/release/examples/add.wasm ./target/wasm32-wasi/release/examples/add.wasm
+wasm-opt -O4 -o ./target/wasm32-wasip1/release/examples/add.wasm ./target/wasm32-wasip1/release/examples/add.wasm
 ```
 
 3. Precompile the example for efficient execution with wasmtime:
 
 ```sh
-cargo run --manifest-path ./ow-wasmtime-precompiler/Cargo.toml --release --bin wasmtime ./target/wasm32-wasi/release/examples/add.wasm
+cargo run --manifest-path ./ow-wasmtime-precompiler/Cargo.toml --release --bin wasmtime ./target/wasm32-wasip1/release/examples/add.wasm
 ```
 
 4. Install wsk-cli from https://github.com/apache/openwhisk-cli/releases/tag/1.2.0
@@ -81,7 +81,7 @@ Execute this command.
 7. Upload the example zip to OpenWhisk:
 
 ```sh
-wsk action create --kind wasm:0.1 add ./target/wasm32-wasi/release/examples/add-wasmtime.zip
+wsk action create --kind wasm:0.1 add ./target/wasm32-wasip1/release/examples/add-wasmtime.zip
 ```
 
 8. Run the action. We need to provide the correct parameters for this action, which are defined in our action source file `ow-wasm-action/examples/add.rs`. Let's see what the result of `2+2` is:
